@@ -6,7 +6,9 @@
     <title>Biblical Characters' Journeys</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="css/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/leaflet.css"> 
+    <link rel="stylesheet" href="css/leaflet.css">
+
+    
 </head>
 <body>
 
@@ -16,6 +18,10 @@
     <select id="journey-select">
         <option disabled>-- Old Testament Journeys --</option>
         <option value="Adam and Eve's Journey">Adam and Eve's Journey</option>
+        <option value="Paul's First Missionary Journey">Paul's First Missionary Journey</option>
+        <option value="Paul's Second Missionary Journey">Paul's Second Missionary Journey</option>
+        <option value="Paul's Third Missionary Journey">Paul's Third Missionary Journey</option> 
+        <option value="Paul's Fourth Missionary Journey">Paul's Fourth Missionary Journey</option>
         <option value="Noah's Journey">Noah's Journey</option>
         <option value="Nimrod's Journey">Nimrod's Journey</option>
         <option value="Job's Journey">Job's Journey</option>
@@ -107,7 +113,84 @@
 
     // Journeys Data
     var journeys = {
-        "Paul's Journey": {
+
+        "Paul's First Missionary Journey": {
+                                            locations: [
+                                            { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 },
+                                            { name: "Seleucia", lat: 36.8233, lon: 35.8993 },
+                                            { name: "Salamis (Cyprus)", lat: 35.1667, lon: 33.3667 },
+                                            { name: "Paphos (Cyprus)", lat: 34.7754, lon: 32.4245 },
+                                            { name: "Perga (Pamphylia)", lat: 36.9565, lon: 30.8503 },
+                                            { name: "Antioch (Pisidia)", lat: 38.3524, lon: 30.5236 },
+                                            { name: "Iconium", lat: 37.8746, lon: 32.4932 },
+                                            { name: "Lystra", lat: 37.5772, lon: 31.0506 },
+                                            { name: "Derbe", lat: 37.5553, lon: 33.3793 },
+                                            { name: "Attalia", lat: 36.8871, lon: 30.7056 },
+                                            { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 }
+                                            ],
+                                            color: 'blue'
+                                        },
+                                    "Paul's Second Missionary Journey": {
+                                        locations: [
+                                        { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 },
+                                        { name: "Tarsus", lat: 37.0000, lon: 35.3213 },
+                                        { name: "Derbe", lat: 37.5553, lon: 33.3793 },
+                                        { name: "Lystra", lat: 37.5772, lon: 31.0506 },
+                                        { name: "Iconium", lat: 37.8746, lon: 32.4932 },
+                                        { name: "Troas", lat: 39.8300, lon: 26.0300 },
+                                        { name: "Neapolis", lat: 40.9439, lon: 24.4018 },
+                                        { name: "Philippi", lat: 41.0082, lon: 24.7121 },
+                                        { name: "Thessalonica", lat: 40.6401, lon: 22.9444 },
+                                        { name: "Berea", lat: 40.5194, lon: 22.2014 },
+                                        { name: "Athens", lat: 37.9838, lon: 23.7275 },
+                                        { name: "Corinth", lat: 37.9838, lon: 22.4906 },
+                                        { name: "Ephesus", lat: 37.9508, lon: 27.3626 },
+                                        { name: "Caesarea", lat: 32.501, lon: 34.892 },
+                                        { name: "Jerusalem", lat: 31.7683, lon: 35.2137 },
+                                        { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 }
+                                        ],
+                                        color: 'green'
+                                    },
+                                    "Paul's Third Missionary Journey": {
+                                        locations: [
+                                        { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 },
+                                        { name: "Tarsus", lat: 37.0000, lon: 35.3213 },
+                                        { name: "Derbe", lat: 37.5553, lon: 33.3793 },
+                                        { name: "Lystra", lat: 37.5772, lon: 31.0506 },
+                                        { name: "Iconium", lat: 37.8746, lon: 32.4932 },
+                                        { name: "Ephesus", lat: 37.9508, lon: 27.3626 },
+                                        { name: "Troas", lat: 39.8300, lon: 26.0300 },
+                                        { name: "Philippi", lat: 41.0082, lon: 24.7121 },
+                                        { name: "Thessalonica", lat: 40.6401, lon: 22.9444 },
+                                        { name: "Berea", lat: 40.5194, lon: 22.2014 },
+                                        { name: "Corinth", lat: 37.9838, lon: 22.4906 },
+                                        { name: "Philippi", lat: 41.0082, lon: 24.7121 },
+                                        { name: "Troas", lat: 39.8300, lon: 26.0300 },
+                                        { name: "Miletus", lat: 37.5300, lon: 27.2700 },
+                                        { name: "Tyre", lat: 33.2700, lon: 35.2000 },
+                                        { name: "Ptolemais", lat: 32.9236, lon: 35.0818 },
+                                        { name: "Caesarea", lat: 32.501, lon: 34.892 },
+                                        { name: "Jerusalem", lat: 31.7683, lon: 35.2137 }
+                                        ],
+                                        color: 'red'
+                                    },
+
+                                    "Paul's Fourth Journey (to Rome)": {
+                                        locations: [
+                                        { name: "Jerusalem", lat: 31.7683, lon: 35.2137 },
+                                        { name: "Caesarea", lat: 32.501, lon: 34.892 },
+                                        { name: "Sidon", lat: 33.5631, lon: 35.3689 },
+                                        { name: "Myra", lat: 36.2500, lon: 29.9833 },
+                                        { name: "Fair Havens (Crete)", lat: 35.0368, lon: 25.7644 },
+                                        { name: "Malta (Shipwreck)", lat: 35.8997, lon: 14.5146 },
+                                        { name: "Syracuse (Sicily)", lat: 37.0755, lon: 15.2866 },
+                                        { name: "Rhegium", lat: 38.1111, lon: 15.6406 },
+                                        { name: "Puteoli", lat: 40.8220, lon: 14.1224 },
+                                        { name: "Rome", lat: 41.9028, lon: 12.4964 }
+                                        ],
+                                        color: 'purple'
+                                    }, 
+           "Paul's Journey": {
             locations: [
                 { name: "Damascus", lat: 33.5138, lon: 36.2765 },
                 { name: "Jerusalem", lat: 31.7683, lon: 35.2137 },
@@ -695,4 +778,4 @@
 </script>
 
 </body>
-</html>
+</html> 
