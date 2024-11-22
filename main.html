@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblical Characters' Journeys</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="css/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/leaflet.css">
+
+    
+</head>
+<body>
+
+<div id="map"></div>
+<div id="menu">
+    <label for="journey-select">Choose a Journey:</label>
+    <select id="journey-select">
+        <option disabled>-- Old Testament Journeys --</option>
+        <option value="Adam and Eve's Journey">Adam and Eve's Journey</option>
+        <option value="Paul's First Missionary Journey">Paul's First Missionary Journey</option>
+        <option value="Paul's Second Missionary Journey">Paul's Second Missionary Journey</option>
+        <option value="Paul's Third Missionary Journey">Paul's Third Missionary Journey</option> 
+        <option value="Paul's Fourth Missionary Journey">Paul's Fourth Missionary Journey</option>
+        <option value="Noah's Journey">Noah's Journey</option>
+        <option value="Nimrod's Journey">Nimrod's Journey</option>
+        <option value="Job's Journey">Job's Journey</option>
+        <option value="Abraham's Journey">Abraham's Journey</option>
+        <option value="Jacob's Journey">Jacob's Journey</option>
+        <option value="Esau's Journey">Esau's Journey</option>
+        <option value="Joseph's Journey">Joseph's Journey</option>
+        <option value="Joseph's Brothers' Journey">Joseph's Brothers' Journey</option>
+        <option value="Moses' Journey">Moses' Journey</option>
+        <option value="Caleb's Journey">Caleb's Journey</option>
+        <option value="Joshua's Journey">Joshua's Journey</option>
+        <option value="Ruth's Journey">Ruth's Journey</option>
+        <option value="Samson's Journey">Samson's Journey</option>
+        <option value="Samuel's Journey">Samuel's Journey</option>
+        <option value="Saul's Journey">Saul's Journey</option>
+        <option value="David's Journey">David's Journey</option>
+        <option value="Elijah's Journey">Elijah's Journey</option>
+        <option value="Jonah's Journey">Jonah's Journey</option>
+        <option value="Solomon's Journey">Solomon's Journey</option>
+        <option value="Jeremiah's Journey">Jeremiah's Journey</option>
+        <option value="Daniel's Journey">Daniel's Journey</option>
+        <option value="Esther's Journey">Esther's Journey</option>
+        <option value="Ezra's Journey">Ezra's Journey</option>
+        <option value="Nehemiah's Journey">Nehemiah's Journey</option>
+        
+        <option disabled>-- New Testament Journeys --</option>
+        <option value="John the Baptist's Journey">John the Baptist's Journey</option>
+        <option value="Mary's Journey (Mother of Jesus)">Mary's Journey (Mother of Jesus)</option>
+        <option value="Joseph's Journey (Earthly Father of Jesus)">Joseph's Journey (Earthly Father of Jesus)</option>
+        <option value="Wise Men's Journey">Wise Men's Journey</option>
+        <option value="Jesus' Journey">Jesus' Journey</option>
+        <option value="Peter's Journey">Peter's Journey</option>
+        <option value="Andrew's Journey">Andrew's Journey</option>
+        <option value="Thomas' Journey">Thomas' Journey</option>
+        <option value="Philip's Journey">Philip's Journey</option>
+        <option value="James the Greater's Journey">James the Greater's Journey</option>
+        <option value="James the Lesser's Journey">James the Lesser's Journey</option>
+        <option value="Judas Iscariot's Journey">Judas Iscariot's Journey</option>
+        <option value="Mary Magdalene's Journey">Mary Magdalene's Journey</option>
+        <option value="Martha's Journey">Martha's Journey</option>
+        <option value="Lazarus' Journey">Lazarus' Journey</option>
+        <option value="Zacchaeus' Journey">Zacchaeus' Journey</option>
+        <option value="Jairus' Journey">Jairus' Journey</option>
+        <option value="Simon of Cyrene's Journey">Simon of Cyrene's Journey</option>
+        <option value="Nicodemus' Journey">Nicodemus' Journey</option>
+        <option value="Joseph of Arimathea's Journey">Joseph of Arimathea's Journey</option>
+        <option value="Tabitha (Dorcas)'s Journey">Tabitha (Dorcas)'s Journey</option>
+        <option value="Barnabas' Journey">Barnabas' Journey</option>
+        <option value="Timothy's Journey">Timothy's Journey</option>
+        <option value="Titus' Journey">Titus' Journey</option>
+        <option value="Lydia's Journey">Lydia's Journey</option>
+        <option value="Apollos' Journey">Apollos' Journey</option>
+        <option value="Priscilla and Aquila's Journey">Priscilla and Aquila's Journey</option>
+        <option value="Silas' Journey">Silas' Journey</option>
+        <option value="Mark (John Mark)'s Journey">Mark (John Mark)'s Journey</option>
+        <option value="Luke's Journey">Luke's Journey</option>
+        <option value="Stephen's Journey">Stephen's Journey</option>
+        <option value="John (The Beloved Disciple)'s Journey">John (The Beloved Disciple)'s Journey</option>
+        <option value="Matthias' Journey">Matthias' Journey</option>
+        <option value="Paul's Journey">Paul's Journey</option>
+        <option value="Paul's Journey to Rome">Paul's Journey to Rome</option>
+        <option value="Ananias of Damascus' Journey">Ananias of Damascus' Journey</option>
+        <option value="Sapphira's Journey">Sapphira's Journey</option>
+        <option value="Herod the Great's Journey">Herod the Great's Journey</option>
+        <option value="Herod Antipas' Journey">Herod Antipas' Journey</option>
+        <option value="Cornelius' Journey">Cornelius' Journey</option>
+        <option value="Simon the Zealot's Journey">Simon the Zealot's Journey</option>
+        <option value="Bartholomew's Journey">Bartholomew's Journey</option>
+        <option value="Rhoda's Journey">Rhoda's Journey</option>
+        <option value="Philemon's Journey">Philemon's Journey</option>
+
+    </select>
+</div>
+<div id="timeline">
+    <button id="prev" disabled>Previous</button>
+    <button id="next">Next</button>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Initialize the map
+    var map = L.map('map', { zoomAnimation: true }).setView([32, 35], 6);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    }).addTo(map);
+
+    // Journeys Data
+    var journeys = {
+
+        "Paul's First Missionary Journey": {
+                                            locations: [
+                                            { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 },
+                                            { name: "Seleucia", lat: 36.8233, lon: 35.8993 },
+                                            { name: "Salamis (Cyprus)", lat: 35.1667, lon: 33.3667 },
+                                            { name: "Paphos (Cyprus)", lat: 34.7754, lon: 32.4245 },
+                                            { name: "Perga (Pamphylia)", lat: 36.9565, lon: 30.8503 },
+                                            { name: "Antioch (Pisidia)", lat: 38.3524, lon: 30.5236 },
+                                            { name: "Iconium", lat: 37.8746, lon: 32.4932 },
+                                            { name: "Lystra", lat: 37.5772, lon: 31.0506 },
+                                            { name: "Derbe", lat: 37.5553, lon: 33.3793 },
+                                            { name: "Attalia", lat: 36.8871, lon: 30.7056 },
+                                            { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 }
+                                            ],
+                                            color: 'blue'
+                                        },
+                                    "Paul's Second Missionary Journey": {
+                                        locations: [
+                                        { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 },
+                                        { name: "Tarsus", lat: 37.0000, lon: 35.3213 },
+                                        { name: "Derbe", lat: 37.5553, lon: 33.3793 },
+                                        { name: "Lystra", lat: 37.5772, lon: 31.0506 },
+                                        { name: "Iconium", lat: 37.8746, lon: 32.4932 },
+                                        { name: "Troas", lat: 39.8300, lon: 26.0300 },
+                                        { name: "Neapolis", lat: 40.9439, lon: 24.4018 },
+                                        { name: "Philippi", lat: 41.0082, lon: 24.7121 },
+                                        { name: "Thessalonica", lat: 40.6401, lon: 22.9444 },
+                                        { name: "Berea", lat: 40.5194, lon: 22.2014 },
+                                        { name: "Athens", lat: 37.9838, lon: 23.7275 },
+                                        { name: "Corinth", lat: 37.9838, lon: 22.4906 },
+                                        { name: "Ephesus", lat: 37.9508, lon: 27.3626 },
+                                        { name: "Caesarea", lat: 32.501, lon: 34.892 },
+                                        { name: "Jerusalem", lat: 31.7683, lon: 35.2137 },
+                                        { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 }
+                                        ],
+                                        color: 'green'
+                                    },
+                                    "Paul's Third Missionary Journey": {
+                                        locations: [
+                                        { name: "Antioch (Syria)", lat: 36.2021, lon: 37.1343 },
+                                        { name: "Tarsus", lat: 37.0000, lon: 35.3213 },
+                                        { name: "Derbe", lat: 37.5553, lon: 33.3793 },
+                                        { name: "Lystra", lat: 37.5772, lon: 31.0506 },
+                                        { name: "Iconium", lat: 37.8746, lon: 32.4932 },
+                                        { name: "Ephesus", lat: 37.9508, lon: 27.3626 },
+                                        { name: "Troas", lat: 39.8300, lon: 26.0300 },
+                                        { name: "Philippi", lat: 41.0082, lon: 24.7121 },
+                                        { name: "Thessalonica", lat: 40.6401, lon: 22.9444 },
+                                        { name: "Berea", lat: 40.5194, lon: 22.2014 },
+                                        { name: "Corinth", lat: 37.9838, lon: 22.4906 },
+                                        { name: "Philippi", lat: 41.0082, lon: 24.7121 },
+                                        { name: "Troas", lat: 39.8300, lon: 26.0300 },
+                                        { name: "Miletus", lat: 37.5300, lon: 27.2700 },
+                                        { name: "Tyre", lat: 33.2700, lon: 35.2000 },
+                                        { name: "Ptolemais", lat: 32.9236, lon: 35.0818 },
+                                        { name: "Caesarea", lat: 32.501, lon: 34.892 },
+                                        { name: "Jerusalem", lat: 31.7683, lon: 35.2137 }
+                                        ],
+                                        color: 'red'
+                                    },
+
+                                    "Paul's Fourth Journey (to Rome)": {
+                                        locations: [
+                                        { name: "Jerusalem", lat: 31.7683, lon: 35.2137 },
+                                        { name: "Caesarea", lat: 32.501, lon: 34.892 },
+                                        { name: "Sidon", lat: 33.5631, lon: 35.3689 },
+                                        { name: "Myra", lat: 36.2500, lon: 29.9833 },
+                                        { name: "Fair Havens (Crete)", lat: 35.0368, lon: 25.7644 },
+                                        { name: "Malta (Shipwreck)", lat: 35.8997, lon: 14.5146 },
+                                        { name: "Syracuse (Sicily)", lat: 37.0755, lon: 15.2866 },
+                                        { name: "Rhegium", lat: 38.1111, lon: 15.6406 },
+                                        { name: "Puteoli", lat: 40.8220, lon: 14.1224 },
+                                        { name: "Rome", lat: 41.9028, lon: 12.4964 }
+                                        ],
+                                        color: 'purple'
+                                    }, 
+           "Paul's Journey": {
+            locations: [
+                { name: "Damascus", lat: 33.5138, lon: 36.2765 },
+                { name: "Jerusalem", lat: 31.7683, lon: 35.2137 },
+                { name: "Antioch", lat: 36.2021, lon: 37.1343 },
+                { name: "Cyprus (Salamis)", lat: 35.1667, lon: 33.3667 },
+                { name: "Rome", lat: 41.9028, lon: 12.4964 }
+            ],
+            color: 'blue'
+        },
+        "Jesus' Journey": {
+            locations: [
+                { name: "Bethlehem (Birth)", lat: 31.7054, lon: 35.2024 },
+                { name: "Nazareth (Youth)", lat: 32.6996, lon: 35.3035 },
+                { name: "Sea of Galilee (Ministry)", lat: 32.8336, lon: 35.5881 },
+                { name: "Jerusalem (Crucifixion and Resurrection)", lat: 31.7683, lon: 35.2137 }
+            ],
+            color: 'green'
+        },
+        "Wise Men's Journey": {
+            locations: [
+                { name: "The East (Starting Point)", lat: 32, lon: 45 },
+                { name: "Jerusalem (Consulting Herod)", lat: 31.7683, lon: 35.2137 },
+                { name: "Bethlehem (Meeting Jesus)", lat: 31.7054, lon: 35.2024 }
+            ],
+            color: 'red'
+        },
+        "Moses' Journey": {
+            locations: [
+                { name: "Egypt (Slavery)", lat: 29.871, lon: 31.027 },
+                { name: "Red Sea Crossing", lat: 29.499, lon: 32.502 },
+                { name: "Mount Sinai (Ten Commandments)", lat: 28.5395, lon: 33.975 },
+                { name: "Promised Land Border", lat: 31.800, lon: 35.233 }
+            ],
+            color: 'orange'
+        },
+        "Abraham's Journey": {
+            locations: [
+                { name: "Ur (Birthplace)", lat: 31.326, lon: 45.600 },
+                { name: "Haran (Call to Canaan)", lat: 37.321, lon: 39.303 },
+                { name: "Canaan (Promise)", lat: 31.7683, lon: 35.2137 },
+                { name: "Egypt (Famine Refuge)", lat: 29.871, lon: 31.027 }
+            ],
+            color: 'purple'
+        },
+
+
+
+"David's Journey": {
+    locations: [
+        { name: "Bethlehem (Anointed as King)", lat: 31.7054, lon: 35.2024 },
+        { name: "Elah Valley (Defeats Goliath)", lat: 31.6961, lon: 34.9572 },
+        { name: "Jerusalem (Becomes King)", lat: 31.7683, lon: 35.2137 },
+        { name: "En Gedi (Hides from Saul)", lat: 31.4622, lon: 35.3835 }
+    ],
+    color: 'brown'
+},
+"Elijah's Journey": {
+    locations: [
+        { name: "Tishbe (Hometown)", lat: 32.200, lon: 35.700 },
+        { name: "Mount Carmel (Prophet Showdown)", lat: 32.6725, lon: 35.2992 },
+        { name: "Beersheba (Fleeing Jezebel)", lat: 31.2518, lon: 34.7914 },
+        { name: "Mount Horeb (Hears God's Whisper)", lat: 28.5395, lon: 33.975 }
+    ],
+    color: 'teal'
+},
+"Jonah's Journey": {
+    locations: [
+        { name: "Joppa (Boards Ship)", lat: 32.0662, lon: 34.7778 },
+        { name: "The Sea (Swallowed by Fish)", lat: 32, lon: 35 },
+        { name: "Nineveh (Preaches)", lat: 36.3497, lon: 43.1510 }
+    ],
+    color: 'yellow'
+},
+"Joseph's Journey": {
+    locations: [
+        { name: "Hebron (Sold by Brothers)", lat: 31.5273, lon: 35.1108 },
+        { name: "Egypt (Imprisoned and Rises to Power)", lat: 29.871, lon: 31.027 },
+        { name: "Goshen (Reunited with Family)", lat: 30.9661, lon: 31.5014 }
+    ],
+    color: 'cyan'
+},
+"Ruth's Journey": {
+    locations: [
+        { name: "Moab (Home)", lat: 31.7619, lon: 35.7261 },
+        { name: "Bethlehem (Marries Boaz)", lat: 31.7054, lon: 35.2024 }
+    ],
+    color: 'pink'
+},
+
+
+"Adam and Eve's Journey": {
+    locations: [
+        { name: "Eden (Creation)", lat: 31.5, lon: 44.5 },
+        { name: "Outside Eden (Exile)", lat: 31.0, lon: 44.0 }
+    ],
+    color: 'olive'
+},
+"Noah's Journey": {
+    locations: [
+        { name: "Ararat (Ark Lands)", lat: 39.7, lon: 44.3 }
+    ],
+    color: 'navy'
+},
+"Nimrod's Journey": {
+    locations: [
+        { name: "Shinar (Builds Tower of Babel)", lat: 32.5, lon: 45.5 }
+    ],
+    color: 'gray'
+},
+"Job's Journey": {
+    locations: [
+        { name: "Uz (Homeland)", lat: 31.5, lon: 36.5 }
+    ],
+    color: 'purple'
+},
+"Jacob's Journey": {
+    locations: [
+        { name: "Beersheba (Departure)", lat: 31.2518, lon: 34.7914 },
+        { name: "Bethel (Vision of Ladder)", lat: 32.1832, lon: 35.2194 },
+        { name: "Haran (Serves Laban)", lat: 37.321, lon: 39.303 },
+        { name: "Peniel (Wrestles God)", lat: 32.1924, lon: 35.5966 }
+    ],
+    color: 'violet'
+},
+"Esau's Journey": {
+    locations: [
+        { name: "Beersheba (Birthplace)", lat: 31.2518, lon: 34.7914 },
+        { name: "Edom (Residence)", lat: 30.3197, lon: 35.4757 }
+    ],
+    color: 'maroon'
+},
+"Joseph's Brothers' Journey": {
+    locations: [
+        { name: "Hebron (Departure)", lat: 31.5273, lon: 35.1108 },
+        { name: "Dothan (Sell Joseph)", lat: 32.3392, lon: 35.0733 },
+        { name: "Egypt (Buy Grain)", lat: 29.871, lon: 31.027 }
+    ],
+    color: 'turquoise'
+},
+"Caleb's Journey": {
+    locations: [
+        { name: "Kadesh-Barnea (Scout Mission)", lat: 30.8381, lon: 34.8029 },
+        { name: "Hebron (Inheritance)", lat: 31.5273, lon: 35.1108 }
+    ],
+    color: 'indigo'
+},
+"Joshua's Journey": {
+    locations: [
+        { name: "Shittim (Prepares to Cross Jordan)", lat: 31.8689, lon: 35.6249 },
+        { name: "Jericho (Battle)", lat: 31.871, lon: 35.443 },
+        { name: "Ai (Victory)", lat: 31.9353, lon: 35.2172 },
+        { name: "Shechem (Covenant Renewed)", lat: 32.212, lon: 35.272 }
+    ],
+    color: 'lime'
+},
+"Samson's Journey": {
+    locations: [
+        { name: "Zorah (Birthplace)", lat: 31.7543, lon: 35.0008 },
+        { name: "Timnah (Marriage)", lat: 31.7512, lon: 35.0133 },
+        { name: "Gaza (Death)", lat: 31.5013, lon: 34.4669 }
+    ],
+    color: 'gold'
+},
+"Samuel's Journey": {
+    locations: [
+        { name: "Ramah (Birthplace)", lat: 31.9373, lon: 35.2117 },
+        { name: "Shiloh (Service to Eli)", lat: 32.2171, lon: 35.2724 },
+        { name: "Gilgal (Judges Israel)", lat: 31.8702, lon: 35.3357 }
+    ],
+    color: 'aqua'
+},
+"Saul's Journey": {
+    locations: [
+        { name: "Gibeah (Home)", lat: 31.8463, lon: 35.2232 },
+        { name: "Jabesh-Gilead (First Battle)", lat: 32.4002, lon: 35.6111 },
+        { name: "Mount Gilboa (Death)", lat: 32.456, lon: 35.399 }
+    ],
+    color: 'silver'
+},
+"Solomon's Journey": {
+    locations: [
+        { name: "Jerusalem (Rule as King)", lat: 31.7683, lon: 35.2137 },
+        { name: "Ophir (Receives Gold)", lat: -21.2202, lon: 55.2807 }
+    ],
+    color: 'emerald'
+},
+"Jeremiah's Journey": {
+    locations: [
+        { name: "Anathoth (Birthplace)", lat: 31.8194, lon: 35.2746 },
+        { name: "Jerusalem (Prophecies)", lat: 31.7683, lon: 35.2137 },
+        { name: "Egypt (Exile)", lat: 29.871, lon: 31.027 }
+    ],
+    color: 'beige'
+},
+"Daniel's Journey": {
+    locations: [
+        { name: "Jerusalem (Captured)", lat: 31.7683, lon: 35.2137 },
+        { name: "Babylon (Service to Kings)", lat: 32.5342, lon: 44.4268 }
+    ],
+    color: 'periwinkle'
+},
+"Esther's Journey": {
+    locations: [
+        { name: "Susa (Becomes Queen)", lat: 32.1898, lon: 48.2522 }
+    ],
+    color: 'rose'
+},
+"Ezra's Journey": {
+    locations: [
+        { name: "Babylon (Exile)", lat: 32.5342, lon: 44.4268 },
+        { name: "Jerusalem (Temple Restoration)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'scarlet'
+},
+"Nehemiah's Journey": {
+    locations: [
+        { name: "Susa (King's Cupbearer)", lat: 32.1898, lon: 48.2522 },
+        { name: "Jerusalem (Rebuilds Wall)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'orange'
+},
+"John the Baptist's Journey": {
+    locations: [
+        { name: "Wilderness (Ministry)", lat: 31.5, lon: 35.5 },
+        { name: "Jordan River (Baptizing)", lat: 31.8833, lon: 35.6167 },
+        { name: "Machaerus (Death)", lat: 31.5691, lon: 35.7636 }
+    ],
+    color: 'crimson'
+},
+"Peter's Journey": {
+    locations: [
+        { name: "Galilee (Calling as Disciple)", lat: 32.8336, lon: 35.5881 },
+        { name: "Jerusalem (Preaches at Pentecost)", lat: 31.7683, lon: 35.2137 },
+        { name: "Rome (Martyrdom)", lat: 41.9028, lon: 12.4964 }
+    ],
+    color: 'skyblue'
+},
+
+"Mary's Journey (Mother of Jesus)": {
+    locations: [
+        { name: "Nazareth (Annunciation)", lat: 32.6996, lon: 35.3035 },
+        { name: "Bethlehem (Birth of Jesus)", lat: 31.7054, lon: 35.2024 },
+        { name: "Egypt (Fleeing Herod)", lat: 29.871, lon: 31.027 },
+        { name: "Jerusalem (Temple Visit)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'lavender'
+},
+"Joseph's Journey (Earthly Father of Jesus)": {
+    locations: [
+        { name: "Nazareth (Home)", lat: 32.6996, lon: 35.3035 },
+        { name: "Bethlehem (Jesus' Birth)", lat: 31.7054, lon: 35.2024 },
+        { name: "Egypt (Fleeing Herod)", lat: 29.871, lon: 31.027 },
+        { name: "Nazareth (Return)", lat: 32.6996, lon: 35.3035 }
+    ],
+    color: 'lightgreen'
+},
+"Andrew's Journey": {
+    locations: [
+        { name: "Galilee (Calling as Disciple)", lat: 32.8336, lon: 35.5881 },
+        { name: "Jerusalem (Pentecost)", lat: 31.7683, lon: 35.2137 },
+        { name: "Patras (Martyrdom)", lat: 38.2466, lon: 21.7346 }
+    ],
+    color: 'chartreuse'
+},
+"Thomas' Journey": {
+    locations: [
+        { name: "Jerusalem (Apostolic Ministry)", lat: 31.7683, lon: 35.2137 },
+        { name: "India (Evangelism)", lat: 13.0827, lon: 80.2707 },
+        { name: "Chennai (Martyrdom)", lat: 13.0827, lon: 80.2707 }
+    ],
+    color: 'peach'
+},
+"Philip's Journey": {
+    locations: [
+        { name: "Galilee (Calling)", lat: 32.8336, lon: 35.5881 },
+        { name: "Samaria (Evangelism)", lat: 32.2345, lon: 35.0657 },
+        { name: "Hierapolis (Martyrdom)", lat: 37.9206, lon: 29.1229 }
+    ],
+    color: 'cyan'
+},
+"James the Greater's Journey": {
+    locations: [
+        { name: "Galilee (Calling)", lat: 32.8336, lon: 35.5881 },
+        { name: "Jerusalem (Ministry)", lat: 31.7683, lon: 35.2137 },
+        { name: "Spain (Tradition of Preaching)", lat: 40.4168, lon: -3.7038 }
+    ],
+    color: 'blue'
+},
+"James the Lesser's Journey": {
+    locations: [
+        { name: "Jerusalem (Apostolic Ministry)", lat: 31.7683, lon: 35.2137 },
+        { name: "Egypt (Evangelism)", lat: 29.871, lon: 31.027 }
+    ],
+    color: 'darkblue'
+},
+"Judas Iscariot's Journey": {
+    locations: [
+        { name: "Galilee (Calling)", lat: 32.8336, lon: 35.5881 },
+        { name: "Jerusalem (Betrays Jesus)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'darkred'
+},
+"Barnabas' Journey": {
+    locations: [
+        { name: "Cyprus (Birthplace)", lat: 35.1667, lon: 33.3667 },
+        { name: "Antioch (Ministry)", lat: 36.2021, lon: 37.1343 },
+        { name: "Jerusalem (Council)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'limegreen'
+},
+"Timothy's Journey": {
+    locations: [
+        { name: "Lystra (Conversion)", lat: 37.5772, lon: 31.0506 },
+        { name: "Ephesus (Church Leadership)", lat: 37.9508, lon: 27.3626 }
+    ],
+    color: 'coral'
+},
+"Titus' Journey": {
+    locations: [
+        { name: "Crete (Church Organization)", lat: 35.2401, lon: 24.8093 },
+        { name: "Corinth (Ministry)", lat: 37.9838, lon: 22.4906 }
+    ],
+    color: 'salmon'
+},
+"Lydia's Journey": {
+    locations: [
+        { name: "Thyatira (Hometown)", lat: 38.5852, lon: 27.3613 },
+        { name: "Philippi (Conversion)", lat: 41.0082, lon: 24.7121 }
+    ],
+    color: 'pink'
+},
+"Apollos' Journey": {
+    locations: [
+        { name: "Alexandria (Hometown)", lat: 31.2001, lon: 29.9187 },
+        { name: "Corinth (Preaching)", lat: 37.9838, lon: 22.4906 },
+        { name: "Ephesus (Ministry)", lat: 37.9508, lon: 27.3626 }
+    ],
+    color: 'orange'
+},
+"Priscilla and Aquila's Journey": {
+    locations: [
+        { name: "Rome (Expelled)", lat: 41.9028, lon: 12.4964 },
+        { name: "Corinth (Ministry)", lat: 37.9838, lon: 22.4906 },
+        { name: "Ephesus (Church Planting)", lat: 37.9508, lon: 27.3626 }
+    ],
+    color: 'goldenrod'
+},
+"Silas' Journey": {
+    locations: [
+        { name: "Jerusalem (Council)", lat: 31.7683, lon: 35.2137 },
+        { name: "Philippi (Imprisoned with Paul)", lat: 41.0082, lon: 24.7121 }
+    ],
+    color: 'ivory'
+},
+"Mark (John Mark)'s Journey": {
+    locations: [
+        { name: "Jerusalem (Ministry Start)", lat: 31.7683, lon: 35.2137 },
+        { name: "Antioch (Companionship with Paul)", lat: 36.2021, lon: 37.1343 },
+        { name: "Rome (Writing of Gospel)", lat: 41.9028, lon: 12.4964 }
+    ],
+    color: 'chocolate'
+},
+"Luke's Journey": {
+    locations: [
+        { name: "Antioch (Medical Practice)", lat: 36.2021, lon: 37.1343 },
+        { name: "Rome (Companion of Paul)", lat: 41.9028, lon: 12.4964 }
+    ],
+    color: 'darkslateblue'
+},
+"Stephen's Journey": {
+    locations: [
+        { name: "Jerusalem (Preaching)", lat: 31.7683, lon: 35.2137 },
+        { name: "Jerusalem (Martyrdom)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'red'
+},
+"John (The Beloved Disciple)'s Journey": {
+    locations: [
+        { name: "Jerusalem (Ministry)", lat: 31.7683, lon: 35.2137 },
+        { name: "Patmos (Exile)", lat: 37.3095, lon: 26.5467 },
+        { name: "Ephesus (Ministry)", lat: 37.9508, lon: 27.3626 }
+    ],
+    color: 'azure'
+},
+
+
+"Matthias' Journey": {
+    locations: [
+        { name: "Jerusalem (Appointed as Apostle)", lat: 31.7683, lon: 35.2137 },
+        { name: "Cappadocia (Missionary Work)", lat: 38.6328, lon: 34.8442 }
+    ],
+    color: 'plum'
+},
+"Nicodemus' Journey": {
+    locations: [
+        { name: "Jerusalem (Visit with Jesus)", lat: 31.7683, lon: 35.2137 },
+        { name: "Golgotha (Helps Bury Jesus)", lat: 31.768, lon: 35.216 }
+    ],
+    color: 'mint'
+},
+"Joseph of Arimathea's Journey": {
+    locations: [
+        { name: "Jerusalem (Buries Jesus)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'khaki'
+},
+"Ananias of Damascus' Journey": {
+    locations: [
+        { name: "Damascus (Heals Paul)", lat: 33.5138, lon: 36.2765 }
+    ],
+    color: 'sienna'
+},
+"Sapphira's Journey": {
+    locations: [
+        { name: "Jerusalem (Judgment)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'orchid'
+},
+"Herod the Great's Journey": {
+    locations: [
+        { name: "Jerusalem (Rule as King)", lat: 31.7683, lon: 35.2137 },
+        { name: "Masada (Fortress)", lat: 31.312, lon: 35.355 }
+    ],
+    color: 'crimson'
+},
+"Herod Antipas' Journey": {
+    locations: [
+        { name: "Tiberias (Residence)", lat: 32.795, lon: 35.5313 },
+        { name: "Machaerus (Beheads John the Baptist)", lat: 31.5691, lon: 35.7636 }
+    ],
+    color: 'gold'
+},
+"Cornelius' Journey": {
+    locations: [
+        { name: "Caesarea (Vision and Baptism)", lat: 32.501, lon: 34.892 }
+    ],
+    color: 'peachpuff'
+},
+"Lazarus' Journey": {
+    locations: [
+        { name: "Bethany (Raised from Dead)", lat: 31.764, lon: 35.248 }
+    ],
+    color: 'slategray'
+},
+"Martha's Journey": {
+    locations: [
+        { name: "Bethany (Home and Ministry)", lat: 31.764, lon: 35.248 }
+    ],
+    color: 'goldenrod'
+},
+"Mary Magdalene's Journey": {
+    locations: [
+        { name: "Magdala (Home)", lat: 32.838, lon: 35.519 },
+        { name: "Jerusalem (Witnesses Resurrection)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'magenta'
+},
+"Simon the Zealot's Journey": {
+    locations: [
+        { name: "Jerusalem (Apostolic Ministry)", lat: 31.7683, lon: 35.2137 },
+        { name: "Persia (Martyrdom)", lat: 32.4279, lon: 53.688 }
+    ],
+    color: 'cyan'
+},
+"Bartholomew's Journey": {
+    locations: [
+        { name: "Galilee (Calling)", lat: 32.8336, lon: 35.5881 },
+        { name: "Armenia (Missionary Work)", lat: 40.1792, lon: 44.4991 }
+    ],
+    color: 'lightblue'
+},
+"Jairus' Journey": {
+    locations: [
+        { name: "Capernaum (Daughter Healed)", lat: 32.886, lon: 35.573 }
+    ],
+    color: 'forestgreen'
+},
+"Zacchaeus' Journey": {
+    locations: [
+        { name: "Jericho (Meeting Jesus)", lat: 31.8708, lon: 35.6706 }
+    ],
+    color: 'springgreen'
+},
+"Simon of Cyrene's Journey": {
+    locations: [
+        { name: "Cyrene (Origin)", lat: 32.8204, lon: 21.8576 },
+        { name: "Jerusalem (Carries Jesus' Cross)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'darkorange'
+},
+"Tabitha (Dorcas)'s Journey": {
+    locations: [
+        { name: "Joppa (Raised from the Dead)", lat: 32.0662, lon: 34.7778 }
+    ],
+    color: 'lightpink'
+},
+"Paul's Journey to Rome": {
+    locations: [
+        { name: "Jerusalem (Arrested)", lat: 31.7683, lon: 35.2137 },
+        { name: "Caesarea (Trial)", lat: 32.501, lon: 34.892 },
+        { name: "Malta (Shipwreck)", lat: 35.8997, lon: 14.5146 },
+        { name: "Rome (Imprisonment)", lat: 41.9028, lon: 12.4964 }
+    ],
+    color: 'purple'
+},
+"Rhoda's Journey": {
+    locations: [
+        { name: "Jerusalem (Answered Prayer)", lat: 31.7683, lon: 35.2137 }
+    ],
+    color: 'salmon'
+},
+"Philemon's Journey": {
+    locations: [
+        { name: "Colossae (Receives Letter)", lat: 38.6014, lon: 29.1064 }
+    ],
+    color: 'azure'
+}}
+
+    var currentJourney = "Paul's Journey"; // Default journey
+    var currentIndex = 0;
+    var activeMarker = null;
+    var activePolyline = null;
+
+    function updateJourney() {
+        var journey = journeys[currentJourney];
+
+        // Remove previous polyline
+        if (activePolyline) {
+            map.removeLayer(activePolyline);
+        }
+
+        // Add the polyline for the selected journey
+        var route = journey.locations.map(loc => [loc.lat, loc.lon]);
+        activePolyline = L.polyline(route, {
+            color: journey.color,
+            weight: 3,
+            opacity: 0.8,
+            dashArray: '4, 6'
+        }).addTo(map);
+
+        currentIndex = 0; // Reset index for new journey
+        showLocation(currentIndex);
+    }
+
+    function showLocation(index) {
+        var journey = journeys[currentJourney];
+        var location = journey.locations[index];
+
+        if (activeMarker) {
+            map.removeLayer(activeMarker);
+        }
+
+        activeMarker = L.marker([location.lat, location.lon])
+            .addTo(map)
+            .bindPopup(`<b>${location.name}</b>`)
+            .openPopup();
+
+        map.flyTo([location.lat, location.lon], 8, { animate: true, duration: 1 });
+
+        // Update button states
+        document.getElementById("prev").disabled = index === 0;
+        document.getElementById("next").disabled = index === journey.locations.length - 1;
+    }
+
+    document.getElementById("prev").addEventListener("click", () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            showLocation(currentIndex);
+        }
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+        if (currentIndex < journeys[currentJourney].locations.length - 1) {
+            currentIndex++;
+            showLocation(currentIndex);
+        }
+    });
+
+    document.getElementById("journey-select").addEventListener("change", (event) => {
+        currentJourney = event.target.value;
+        updateJourney();
+    });
+
+    updateJourney(); // Initialize
+</script>
+
+</body>
+</html> 
