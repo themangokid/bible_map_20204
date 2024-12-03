@@ -52,3 +52,24 @@ body, html {
     background: gray;
     cursor: not-allowed;
 }
+
+#map-switcher {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    z-index: 1000;
+}
+
+#switch-map {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#switch-map:hover {
+    background-color: #0056b3;
+}

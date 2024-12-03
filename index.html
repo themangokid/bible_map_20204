@@ -99,17 +99,48 @@
     <button id="prev" disabled>Previous</button>
     <button id="next">Next</button>
 </div>
+<div id="map-switcher">
+    <button id="switch-map">Switch Map</button>
+</div>
+<div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
+
     // Initialize the map
     var map = L.map('map', { zoomAnimation: true }).setView([32, 35], 6);
 
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Define the two tile layers
+    var openStreetMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 18
-    }).addTo(map);
+    });
+    var cartoDBLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19
+    });
+
+        // Add the first layer to the map by default
+    openStreetMapLayer.addTo(map);
+
+    // Track the current layer
+    var currentLayer = openStreetMapLayer;
+
+    // Add an event listener for the switch button
+    document.getElementById('switch-map').addEventListener('click', function () {
+        if (currentLayer === openStreetMapLayer) {
+            document.getElementById('switch-map').innerHTML = 'CartoDB (English)';
+            map.removeLayer(openStreetMapLayer);
+            cartoDBLayer.addTo(map);
+            currentLayer = cartoDBLayer;
+        } else {
+            document.getElementById('switch-map').innerHTML = 'Default OpenStreetMap';
+            map.removeLayer(cartoDBLayer);
+            openStreetMapLayer.addTo(map);
+            currentLayer = openStreetMapLayer;
+        }
+    });
 
     // Journeys Data
     var journeys = {
@@ -776,6 +807,9 @@
 
     updateJourney(); // Initialize
 </script>
+
+
+
 
 </body>
 </html> 
